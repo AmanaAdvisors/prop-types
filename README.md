@@ -1,3 +1,31 @@
+# NB IMPORTANT
+
+This is a fork of the production to solve a bug.
+
+We rely on proptypes to determing run-time behaviour, and the upstream library
+transforms into a no-op in a production environment. This is not what we want.
+
+In short, the unforked library does:
+`
+// Locally:
+foo.propTypes[bar].string
+foo.propTypes[bar] == PropTypes.number // false
+// In Production
+foo.propTypes[bar] == PropTypes.number // true
+`
+
+This fork does:
+`
+// Locally:
+foo.propTypes[bar].string
+foo.propTypes[bar] == PropTypes.number // false
+// In Production
+foo.propTypes[bar] == PropTypes.number // false
+`
+
+This is at the expense of a slightly bigger javascript bundle.
+
+
 # prop-types
 
 Runtime type checking for React props and similar objects.
